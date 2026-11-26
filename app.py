@@ -15,13 +15,16 @@ st.set_page_config(
 )
 
 # Load model
-if not os.path.exists("svm_model.pkl"):
-    gdown.download(
-        id="1bHS0i4vFPIqQPTYi-jlFxjtO2wMafPQ_",
-        output="svm_model.pkl"
-    )
+@st.cache_resource
+def load_model():
+    if not os.path.exists("svm_model.pkl"):
+        gdown.download(
+            id="1bHS0i4vFPIqQPTYi-jlFxjtO2wMafPQ_",
+            output="svm_model.pkl"
+        )
+    return joblib.load("svm_model.pkl")
 
-svm = joblib.load("svm_model.pkl")
+svm = load_model()
 
 labels = ["Glioma", "Meningioma", "No Tumor", "Pituitary"]
 
